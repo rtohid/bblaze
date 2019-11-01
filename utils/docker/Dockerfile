@@ -61,8 +61,6 @@ RUN cmake \
 RUN make -j ${CORES} install
 
 RUN echo "ALL            ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
-COPY ./Dockerfile /Dockerfile
-COPY ./scripts/vimrc /home/blaze/.vimrc
 RUN useradd -m blaze
 USER blaze
 WORKDIR /home/blaze
