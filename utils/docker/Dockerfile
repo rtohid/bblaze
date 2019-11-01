@@ -3,6 +3,7 @@
 #  Distributed under the Boost Software License, Version 1.0. (See
 #  accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+FROM fedora
 
 # Prerequisite packages
 RUN dnf install -y sudo
@@ -20,6 +21,7 @@ RUN dnf install -y hdf5-openmpi-devel
 RUN dnf install -y python3-devel python3 python3-pip python3-flake8
 
 # Build arguments
+ARG SRC
 ARG CORES
 ARG PREFIX
 ARG MALLOC
@@ -32,7 +34,8 @@ WORKDIR /
 # Install HPX
 RUN git clone --depth 1 https://github.com/STEllAR-GROUP/hpx.git
 RUN mkdir -p /hpx/build
-RUN cd /hpx/build
+WORKDIR /hpx/build
+RUN pwd
 RUN cmake \ 
       -DHPX_WITH_TESTS=OFF                                         \
       -DHPX_WITH_EXAMPLES=oFF                                      \
@@ -54,10 +57,10 @@ RUN cmake \
       -DCMAKE_INSTALL_PREFIX=${PREFIX}/bblaze/${BUILD_TYPE} \
       ..
 
-RUN make -j ${CORES} install && \
+RUN make -j ${CORES} install
 
 RUN echo "ALL            ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
-COPY docker/Dockerfile /Dockerfile
+COPY ./Dockerfile /Dockerfile
 COPY ./scripts/vimrc /home/blaze/.vimrc
 RUN useradd -m blaze
 USER blaze
