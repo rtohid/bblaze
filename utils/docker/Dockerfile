@@ -48,13 +48,13 @@ RUN cmake \
 RUN make -j ${CORES} install
 
 # Install Blaze
-RUN git clone https://bitbucket.org/blaze-lib/blaze.git $(SRC)
-RUN mkdir -p $(SRC)/build && cd $(SRC)/build
+RUN git clone https://bitbucket.org/blaze-lib/blaze.git ${SRC}
+RUN mkdir -p ${SRC}/build && cd ${SRC}/build
 RUN cmake \
-      -DCMAKE_BUILD_TYPE=${BUILD_TYPE}                               \
-      -DBLAZE_SMP_THREADS=HPX                                        \
-      -DHPX_DIR=${PREFIX}/hpx/${BUILD_TYPE}                \
-      -DCMAKE_INSTALL_PREFIX=${PREFIX}/bblaze/${BUILD_TYPE} \
+      -DCMAKE_BUILD_TYPE=${BUILD_TYPE}                             \
+      -DBLAZE_SMP_THREADS=HPX                                      \
+      -DHPX_DIR=${PREFIX}/hpx/${BUILD_TYPE}                        \
+      -DCMAKE_INSTALL_PREFIX=${PREFIX}/bblaze/${BUILD_TYPE}        \
       ..
 
 RUN make -j ${CORES} install
